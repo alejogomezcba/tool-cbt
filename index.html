@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap"
         rel="stylesheet">
+        
     <title>CBT Support Tool</title>
 
     <style>
@@ -42,6 +43,18 @@
             display: block;
 
 
+        }
+
+        .cabecera{
+            display: flex;
+            align-content: center;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cabecera img{
+            height: 40px;
+            margin-right: 40px;
         }
 
         .cont_gral {
@@ -112,8 +125,8 @@ width: 60%;
         }
         .images img{
             width: auto;
-            height: 100px;
-            border: 1px solid gray;
+            height: 90px;
+            border: 1px solid rgba(161, 161, 161, 0.575);
         }
         .images h4{
             width: 100%;
@@ -125,16 +138,19 @@ width: 60%;
 <body>
 
     <div class="cont_gral">
-        <img src="https://www.mercadolibre.com/org-img/mkt/email-mkt-assets/davinci/2x/isologoml_codo_a_codo.png"" alt="
+        <div class="cabecera">
+            <img src="https://www.mercadolibre.com/org-img/mkt/email-mkt-assets/davinci/2x/isologoml_codo_a_codo.png" alt="
             Logo Meli">
         <h1>Tool CBT</h1>
+        </div>
+
 
         <div class="info">
 
             <div class="contenedor_searchitem">
                 <div>
                     <h4>Buscar info de Item <input type="text" placeholder="Buscador de item" id="searchbar"
-                            onkeypress="enterkey(event)" autocomplete=off> <button onclick="itemkeyword()"
+                             autocomplete=off> <button onclick="itemkeyword()"
                             class="btn-buscar" id="btn-buscar">Buscar</button></h4>
 
                 </div>
@@ -152,7 +168,7 @@ width: 60%;
             <div class="result_seller" id="result_seller">
                 <div>
                     <h4>Buscar info de User <input type="text" placeholder="Buscador de User" id="searchbaruser"
-                            onkeypress="enterkey(event)" autocomplete=off>
+                             autocomplete=off>
                         <button onclick="userkeyword()" class="btn-buscar" id="btn-buscar-user">Buscar</button>
                     </h4>
 
@@ -192,13 +208,6 @@ width: 60%;
 
         //** -  Tecla enter acciona busqueda - **//
 
-        function enterkey(e) {
-            if (e.keyCode == 13) {
-                itemkeyword();
-                userkeyword();
-            }
-            return;
-        }
 
         //** - Función para buscar items - **//
 
@@ -374,20 +383,19 @@ width: 60%;
                 imageItem.alt = "imagen del item";
                 imageItemsCont.appendChild(imageItem);
             })
-
-
-
+ 
+            itemResultlink.innerHTML = "link al item";
+            itemResultlink.href = link;
+            itemResultlink.target = "_blank";
 
 
             result_item.appendChild(textoItem);
-            textoItem.innerHTML = "Título: " + titulo + " <br /> " + "Item: " + item + " <br /> " + "Item CBT: " + cbtItemParent + " <br /> " + "Seller: " + seller + " <br /> " + "Parent CBT: " + sellerParent + " <br /> " + "Categoría: " + categoria + "  soporta " + catShiOptMe1 + ", " + catShiOptMe2 + ", " + catShiOptMe3 + " <br /> " + "Dimensiones de la categoría --> " + "Largo: " + largoCate + "; " + "Ancho: " + anchoCate + "; " + "Alto: " + altoCate + "; " + "Peso: " + pesoCate + " <br /> " + "Dimensiones del item --> " + "Largo: " + largoItem + "; " + "Ancho: " + anchoItem + "; " + "Alto: " + altoItem + "; " + "Peso: " + pesoItem + " <br /> " + "Apto para FBM: " + itemFBMYesNo + " <br /> " + "Inventario FBM: " + inventario + " <br /> " + "Opciones de Envío: " + shipping + " <br /> " + "Estado: " + status;
+            textoItem.innerHTML = "Título: " + titulo + " <br /> " + "Item: " + item + " <br /> " + "Item CBT: " + cbtItemParent + " <br /> " + "Seller: " + seller + " <br /> " + "Parent CBT: " + sellerParent + " <br /> " + "Categoría: " + categoria + "  soporta " + catShiOptMe1 + ", " + catShiOptMe2 + ", " + catShiOptMe3 + " <br /> " + "Dimensiones de la categoría --> " + "Largo: " + largoCate + "; " + "Ancho: " + anchoCate + "; " + "Alto: " + altoCate + "; " + "Peso: " + pesoCate + " <br /> " + "Dimensiones del item --> " + "Largo: " + largoItem + "; " + "Ancho: " + anchoItem + "; " + "Alto: " + altoItem + "; " + "Peso: " + pesoItem + " <br /> " + "Apto para FBM: " + itemFBMYesNo + " <br /> " + "Inventario FBM: " + inventario + " <br /> " + "Opciones de Envío: " + shipping + " <br /> " + "Estado: " + status + " <br /> "+"Publicación: " + itemResultlink;
 
-            links.appendChild(itemResultlink);
+    
             links.appendChild(catEquiURL);
 
-            itemResultlink.innerHTML = "Publicación";
-            itemResultlink.href = link;
-            itemResultlink.target = "_blank";
+            
 
             catEquiURL.innerHTML = `Equivalente para ${categoria}`;
             catEquiURL.href = `${InternalApi}/equivalent_categories/categories/${categoria}`;
