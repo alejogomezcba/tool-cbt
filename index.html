@@ -316,7 +316,7 @@ width: 70%;
             const ParentItemPic = parentItemPicjson.pictures;
             const imgTitlePadre = document.createElement("h4");
 
-            imgTitlePadre.innerHTML = "Imágenes del Item Padre";
+            imgTitlePadre.innerHTML = `Imágenes del Item ${cbtItemParent}`;
             imageItemsCont.appendChild(imgTitlePadre);
 
             ParentItemPic.forEach(function (picture) {
@@ -367,7 +367,7 @@ width: 70%;
             
             const imgTitleCont = document.createElement("h4");
 
-            imgTitleCont.innerHTML = "Imágenes del site Item";
+            imgTitleCont.innerHTML = `Imágenes del site ${search}`;
             imageItemsCont.appendChild(imgTitleCont);
 
             pictures.forEach(function (picture) {
