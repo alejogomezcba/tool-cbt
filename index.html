@@ -273,8 +273,6 @@ width: 70%;
             );
             const jsoned = await found.json();
 
-            console.log(jsoned);
-
             var categoria = jsoned.category_id;
             var seller = jsoned.seller_id
             var titulo = jsoned.title
@@ -312,7 +310,7 @@ width: 70%;
 
             const parentItemPic = await fetch(`${InternalApi}/items/${cbtItemParent}?caller.scopes=admin`);
             const parentItemPicjson = await parentItemPic.json();
-            console.log(parentItemPicjson);
+
             const ParentItemPic = parentItemPicjson.pictures;
             const imgTitlePadre = document.createElement("h4");
 
@@ -321,7 +319,7 @@ width: 70%;
 
             ParentItemPic.forEach(function (picture) {
             const imageParentItem = document.createElement("img");
-                imageParentItem.src = picture.url;
+                imageParentItem.src = picture.secure_url;
                 imageParentItem.alt = "imagen del item Padre";
                 imageItemsCont.appendChild(imageParentItem);
             })
@@ -396,48 +394,6 @@ width: 70%;
             catEquiURL.target = "_blank";
 
         };
-
-
-
-
-
-
-        function imageItem() {
-            fetch(`${urlTren}${apiKey}&limit=56`)
-                .then(response => response.json())
-                .then(trendingjson => {
-                    trendingjson.data;
-
-                    console.log(trendingjson.data);
-
-                    for (each of trendingjson.data) {
-                        let gifID = each.id;
-                        let gifTitle = each.title;
-                        let gifTrenURL = each.bitly_gif_url;
-
-                        let gifTitleNumeral = gifTitle.replace(/ /g, " #");
-                        let gifTendencia = document.createElement("img");
-                        gifTendencia.src = `${giphyMediaUrl}${gifID}/giphy.gif`;
-                        gifTendencia.alt = gifTitle;
-                        gifTendencia.classList.add("trendingimg");
-
-                        const gifTendenciaAnchor = document.createElement("a");
-                        gifTendenciaAnchor.href = gifTrenURL;
-                        gifTendenciaAnchor.target = "_blank";
-
-                        let block_tendencia = document.getElementById("block_tendencias");
-                        let gifTendenciaTitle = document.createElement("p");
-                        gifTendenciaTitle.innerHTML = "#" + gifTitleNumeral;
-                        gifTendenciaTitle.classList.add("trendingtitle");
-
-                        block_tendencia.appendChild(gifTendenciaAnchor);
-                        gifTendenciaAnchor.appendChild(gifTendencia);
-                        gifTendenciaAnchor.appendChild(gifTendenciaTitle);
-                    }
-                });
-        }
-
-
 
 
 
