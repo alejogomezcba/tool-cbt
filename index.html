@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <title>CBT Support Tool</title>
+
+    <style>
+        body {
+            background-color: #EDEDED;
+            font-family: 'Roboto Condensed', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        p {
+            color: black;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        h4 {
+            font-size: 20px;
+        }
+
+        a {
+            padding: 4px;
+            background-color: blue;
+            text-decoration: none;
+            border-radius: 4px;
+            color: white;
+            margin: 20px;
+            display: block;
+
+
+        }
+
+        .cont_gral {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .cont_inputs {
+            display: flex;
+            justify-content: space-evenly;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        #result_item {
+            margin-bottom: 20px;
+        }
+
+        #result_item p,
+        #result_seller p {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        #result_item a {
+            margin-top: 30px;
+        }
+
+        .info {
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        .contenedor_searchitem,
+        .result_seller {
+            padding: 30px;
+            background-color: #F5F5F5;
+            border: 1px solid #E5E5E5;
+            border-radius: 4px;
+        }
+        .contenedor_searchitem{
+width: 70%;
+        }
+        .result_seller{
+            width: 30%;
+        }
+        #links {
+            display: flex;
+            justify-content: space-between;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        #links a {
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        .images{
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            justify-content: space-evenly;
+        }
+        .images img{
+            width: auto;
+            height: 100px;
+            border: 1px solid gray;
+        }
+        .images h4{
+            width: 100%;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="cont_gral">
+        <img src="https://www.mercadolibre.com/org-img/mkt/email-mkt-assets/davinci/2x/isologoml_codo_a_codo.png"" alt="
+            Logo Meli">
+        <h1>Tool CBT</h1>
+
+        <div class="info">
+
+            <div class="contenedor_searchitem">
+                <div>
+                    <h4>Buscar info de Item <input type="text" placeholder="Buscador de item" id="searchbar"
+                            onkeypress="enterkey(event)" autocomplete=off> <button onclick="itemkeyword()"
+                            class="btn-buscar" id="btn-buscar">Buscar</button></h4>
+
+                </div>
+
+                <div id="result_item">
+
+                </div>
+                <div id="links"></div>
+
+                <div class="images" id="images"></div>
+            </div>
+
+
+
+            <div class="result_seller" id="result_seller">
+                <div>
+                    <h4>Buscar info de User <input type="text" placeholder="Buscador de User" id="searchbaruser"
+                            onkeypress="enterkey(event)" autocomplete=off>
+                        <button onclick="userkeyword()" class="btn-buscar" id="btn-buscar-user">Buscar</button>
+                    </h4>
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+
+    </div>
+
+
+
+    <script>
+        let searchbar = document.getElementById("searchbar");
+        let InternalApi = "https://internal-api.mercadolibre.com";
+        let result_item = document.getElementById("result_item");
+        let result_seller = document.getElementById("result_seller");
+        let links = document.getElementById('links');
+        let imageItemsCont = document.getElementById('images');
+
+        function valoresItem() {
+            var i = document.getElementById("item").value;
+            document.getElementById("url").href = InternalApi + "/items/" + i + "?caller.scopes=admin";
+        }
+
+
+        function getEventTarget(e) {
+            e = e || window.event;
+            return e.target || e.srcElement;
+        }
+
+
+        //** -  Tecla enter acciona busqueda - **//
+
+        function enterkey(e) {
+            if (e.keyCode == 13) {
+                itemkeyword();
+                userkeyword();
+            }
+            return;
+        }
+
+        //** - Función para buscar items - **//
+
+        function itemkeyword() {
+
+            if (searchbar.value === "") {
+                alert("Ingrese un valor en el campo de búsqueda.");
+            } else {
+                itemResult(searchbar.value);
+            }
+        }
+
+        function userkeyword() {
+
+            if (searchbaruser.value === "") {
+                alert("Ingrese un valor en el campo de búsqueda.");
+            } else {
+                userResult(searchbaruser.value);
+            }
+        }
+
+
+        let userResult = async search => {
+            const textoSeller = document.createElement("p");
+
+            const userfound = await fetch(`${InternalApi}/cbt/users/${search}?caller.scopes=admin`);
+            const userjson = await userfound.json();
+            var userID = userjson.user_id
+
+            var userParentId = userjson.parent_id
+            var userSite = userjson.site_id
+            var userLogTyp = userjson.logistic_type
+            var userStatus = userjson.status;
+
+            const infoSellerFound = await fetch(`${InternalApi}/users/${userParentId}?caller.id=${userParentId}&caller.scopes=admin`);
+            const infoSellerjson = await infoSellerFound.json();
+
+            var nickname = infoSellerjson.nickname
+            var email = infoSellerjson.email
+
+            const emailBounce = await fetch(`${InternalApi}/internal/email_addresses/${email}`);
+            const emailBouncejson = await emailBounce.json();
+            var emailBounceStatus = emailBouncejson.bouncing_mails.bouncing_status;
+
+            const sellerShipping = await fetch(`${InternalApi}/cbt/shipping_preferences/user/${search}?caller.scopes=admin`);
+            const sellerShippingjson = await sellerShipping.json();
+
+            var sellerShippingCarrier = sellerShippingjson[0].carrier;
+            var sellerShippingCbtMode = sellerShippingjson[0].cbt_mode;
+            var sellerShippingMode = sellerShippingjson[0].mode;
+            var sellerShippingUser = sellerShippingjson[0].user_id;
+
+            result_seller.appendChild(textoSeller);
+            textoSeller.innerHTML = "User ID: " + sellerShippingUser + "<br />" + "Parent ID: " + userParentId + "<br />" + "Nickname: " + nickname + " <br /> " + "Email: " + email + "<br />" + "Bounce email status: " + emailBounceStatus + "<br />" + " Carrier: " + sellerShippingCarrier + "<br />" + "CBT mode: " + sellerShippingCbtMode + "<br />" + "Shipping Mode: " + sellerShippingMode;
+
+
+            /*
+
+            */
+
+        }
+
+
+
+
+
+
+
+        let itemResult = async search => {
+            const found = await fetch(
+                `${InternalApi}/items/${search}?caller.scopes=admin`
+            );
+            const jsoned = await found.json();
+
+            console.log(jsoned);
+
+            var categoria = jsoned.category_id;
+            var seller = jsoned.seller_id
+            var titulo = jsoned.title
+            var item = jsoned.id;
+            var shipping = jsoned.shipping.logistic_type;
+            var inventario = jsoned.inventory_id;
+            var precio = jsoned.price;
+            var cantidad = jsoned.available_quantity;
+            var link = jsoned.permalink;
+            var status = jsoned.status;
+            var pictures = jsoned.pictures;
+
+            const catfound = await fetch(`${InternalApi}/categories/${categoria}/shipping_preferences`);
+            const catjsoned = await catfound.json();
+            var largoCate = catjsoned.dimensions.length;
+            var anchoCate = catjsoned.dimensions.width;
+            var altoCate = catjsoned.dimensions.height;
+            var pesoCate = catjsoned.dimensions.weight;
+
+
+
+            const sellerfound = await fetch(`${InternalApi}/cbt/users/${seller}`);
+            const sellerjsoned = await sellerfound.json();
+            var sellerParent = sellerjsoned.parent_id
+
+            const cbtItemFound = await fetch(`${InternalApi}/cbt/items/${search}`);
+            const cbtItemjson = await cbtItemFound.json();
+            var cbtItemParent = cbtItemjson.parent_id;
+
+            
+
+            if (cbtItemParent === undefined) {
+                cbtItemParent = "No tiene un Item CBT asociado"
+            }
+
+            const parentItemPic = await fetch(`${InternalApi}/items/${cbtItemParent}?caller.scopes=admin`);
+            const parentItemPicjson = await parentItemPic.json();
+            console.log(parentItemPicjson);
+            const ParentItemPic = parentItemPicjson.pictures;
+            const imgTitlePadre = document.createElement("h4");
+
+            imgTitlePadre.innerHTML = "Imágenes del Item Padre";
+            imageItemsCont.appendChild(imgTitlePadre);
+
+            ParentItemPic.forEach(function (picture) {
+            const imageParentItem = document.createElement("img");
+                imageParentItem.src = picture.url;
+                imageParentItem.alt = "imagen del item Padre";
+                imageItemsCont.appendChild(imageParentItem);
+            })
+
+
+            const itemResFBM = await fetch(`${InternalApi}/fulfillment/restrictions/${search}`);
+            const itemResFBMjson = await itemResFBM.json();
+
+            if (itemResFBMjson.fulfillable === true) {
+                var itemFBMYesNo = "Está OK para mandar al WH"
+            } else {
+                var itemFBMYesNo = "Validar las restricciones para FBM"
+            }
+
+            const itemDimen = await fetch(`${InternalApi}/items/${search}/dimensions?caller.scopes=admin`);
+            const itemDimenJson = await itemDimen.json();
+            var largoItem = itemDimenJson.dimensions.length;
+            var anchoItem = itemDimenJson.dimensions.width;
+            var altoItem = itemDimenJson.dimensions.height;
+            var pesoItem = itemDimenJson.dimensions.weight;
+
+            var catShiOptMe1 = catjsoned.logistics[0].mode;
+            var catShiOptMe2 = catjsoned.logistics[1].mode;
+            var catShiOptMe3 = catjsoned.logistics[2].mode;
+
+            if (catShiOptMe2 === "not_specified") {
+                catShiOptMe2 = "No soporta me2";
+            };
+
+            if (catShiOptMe1 === "not_specified") {
+                catShiOptMe1 = "No soporta me1";
+            };
+
+            if (catShiOptMe3 === "not_specified") {
+                catShiOptMe3 = " ";
+            };
+
+
+            const textoItem = document.createElement("p");
+            const itemResultlink = document.createElement("a");
+            const catEquiURL = document.createElement("a");
+            const textoSeller = document.createElement("p");
+            
+            const imgTitleCont = document.createElement("h4");
+
+            imgTitleCont.innerHTML = "Imágenes del site Item";
+            imageItemsCont.appendChild(imgTitleCont);
+
+            pictures.forEach(function (picture) {
+            const imageItem = document.createElement("img");
+                imageItem.src = picture.url;
+                imageItem.alt = "imagen del item";
+                imageItemsCont.appendChild(imageItem);
+            })
+
+
+
+
+
+            result_item.appendChild(textoItem);
+            textoItem.innerHTML = "Título: " + titulo + " <br /> " + "Item: " + item + " <br /> " + "Item CBT: " + cbtItemParent + " <br /> " + "Seller: " + seller + " <br /> " + "Parent CBT: " + sellerParent + " <br /> " + "Categoría: " + categoria + "  soporta " + catShiOptMe1 + ", " + catShiOptMe2 + ", " + catShiOptMe3 + " <br /> " + "Dimensiones de la categoría --> " + "Largo: " + largoCate + "; " + "Ancho: " + anchoCate + "; " + "Alto: " + altoCate + "; " + "Peso: " + pesoCate + " <br /> " + "Dimensiones del item --> " + "Largo: " + largoItem + "; " + "Ancho: " + anchoItem + "; " + "Alto: " + altoItem + "; " + "Peso: " + pesoItem + " <br /> " + "Apto para FBM: " + itemFBMYesNo + " <br /> " + "Inventario FBM: " + inventario + " <br /> " + "Opciones de Envío: " + shipping + " <br /> " + "Estado: " + status;
+
+            links.appendChild(itemResultlink);
+            links.appendChild(catEquiURL);
+
+            itemResultlink.innerHTML = "Publicación";
+            itemResultlink.href = link;
+            itemResultlink.target = "_blank";
+
+            catEquiURL.innerHTML = `Equivalente para ${categoria}`;
+            catEquiURL.href = `${InternalApi}/equivalent_categories/categories/${categoria}`;
+            catEquiURL.target = "_blank";
+
+        };
+
+
+
+
+
+
+        function imageItem() {
+            fetch(`${urlTren}${apiKey}&limit=56`)
+                .then(response => response.json())
+                .then(trendingjson => {
+                    trendingjson.data;
+
+                    console.log(trendingjson.data);
+
+                    for (each of trendingjson.data) {
+                        let gifID = each.id;
+                        let gifTitle = each.title;
+                        let gifTrenURL = each.bitly_gif_url;
+
+                        let gifTitleNumeral = gifTitle.replace(/ /g, " #");
+                        let gifTendencia = document.createElement("img");
+                        gifTendencia.src = `${giphyMediaUrl}${gifID}/giphy.gif`;
+                        gifTendencia.alt = gifTitle;
+                        gifTendencia.classList.add("trendingimg");
+
+                        const gifTendenciaAnchor = document.createElement("a");
+                        gifTendenciaAnchor.href = gifTrenURL;
+                        gifTendenciaAnchor.target = "_blank";
+
+                        let block_tendencia = document.getElementById("block_tendencias");
+                        let gifTendenciaTitle = document.createElement("p");
+                        gifTendenciaTitle.innerHTML = "#" + gifTitleNumeral;
+                        gifTendenciaTitle.classList.add("trendingtitle");
+
+                        block_tendencia.appendChild(gifTendenciaAnchor);
+                        gifTendenciaAnchor.appendChild(gifTendencia);
+                        gifTendenciaAnchor.appendChild(gifTendenciaTitle);
+                    }
+                });
+        }
+
+
+
+
+
+    </script>
+
+</body>
+
+</html>
