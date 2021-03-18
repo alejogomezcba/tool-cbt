@@ -108,17 +108,17 @@ width: 60%;
     background-color: #004766;
 }
 
-.images{
+#images{
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     justify-content: space-evenly;
 }
-.images img{
+#images img{
     width: auto;
     height: 90px;
     border: 1px solid rgba(161, 161, 161, 0.575);
 }
-.images h4{
+#images h4{
     width: 100%;
 }
