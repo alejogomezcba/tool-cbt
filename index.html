@@ -30,31 +30,25 @@
 
         <div class="info">
 
-            <div class="contenedor_searchitem">
+            <div class="contenedor_searchitem" id="contenedor_searchitem">
                 <div>
-                    <h4>Buscar info de Item <input type="text" placeholder="Buscador de item" id="searchbar"
+                    <h4 id="banner_item"> Buscar info de Item <input type="text" placeholder="Buscador de item" id="searchbar"
                              autocomplete=off> <button onclick="itemkeyword()"
                             class="btn-buscar" id="btn-buscar">Buscar</button></h4>
 
                 </div>
 
-                <div id="result_item"></div>
-                <div id="result_variation"></div>
-                <div id="links"></div>
-
-                <div class="images" id="images"></div>
             </div>
 
 
+            <div class="result_seller" >
 
-            <div class="result_seller" id="result_seller">
-                <div>
                     <h4>Buscar info de User <input type="text" placeholder="Buscador de User" id="searchbaruser"
                              autocomplete=off>
                         <button onclick="userkeyword()" class="btn-buscar" id="btn-buscar-user">Buscar</button>
                     </h4>
 
-                </div>
+                <div id="result_seller"></div>    
             </div>
 
         </div>
