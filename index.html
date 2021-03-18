@@ -34,16 +34,11 @@
         }
 
         a {
-            padding: 4px;
-            background-color: blue;
+            background-color: #007EB5;
             text-decoration: none;
             border-radius: 4px;
             color: white;
-            margin: 20px;
-            display: block;
-
-
-        }
+         }
 
         .cabecera{
             display: flex;
@@ -115,6 +110,12 @@ width: 60%;
             text-align: center;
             align-items: center;
             align-content: center;
+            padding: 4px 10px;
+            display: inline-block;
+        }
+
+        #links a:hover{
+            background-color: #004766;
         }
 
         .images{
@@ -368,7 +369,7 @@ width: 60%;
 
 
             const textoItem = document.createElement("p");
-            const itemResultlink = document.createElement("a");
+            
             const catEquiURL = document.createElement("a");
             const textoSeller = document.createElement("p");
             
@@ -383,18 +384,19 @@ width: 60%;
                 imageItem.alt = "imagen del item";
                 imageItemsCont.appendChild(imageItem);
             })
- 
-            itemResultlink.innerHTML = "link al item";
+
+
+            let itemResultlink = document.createElement("a");
             itemResultlink.href = link;
             itemResultlink.target = "_blank";
+            itemResultlink.innerHTML = "Publicación";
 
 
             result_item.appendChild(textoItem);
-            textoItem.innerHTML = "Título: " + titulo + " <br /> " + "Item: " + item + " <br /> " + "Item CBT: " + cbtItemParent + " <br /> " + "Seller: " + seller + " <br /> " + "Parent CBT: " + sellerParent + " <br /> " + "Categoría: " + categoria + "  soporta " + catShiOptMe1 + ", " + catShiOptMe2 + ", " + catShiOptMe3 + " <br /> " + "Dimensiones de la categoría --> " + "Largo: " + largoCate + "; " + "Ancho: " + anchoCate + "; " + "Alto: " + altoCate + "; " + "Peso: " + pesoCate + " <br /> " + "Dimensiones del item --> " + "Largo: " + largoItem + "; " + "Ancho: " + anchoItem + "; " + "Alto: " + altoItem + "; " + "Peso: " + pesoItem + " <br /> " + "Apto para FBM: " + itemFBMYesNo + " <br /> " + "Inventario FBM: " + inventario + " <br /> " + "Opciones de Envío: " + shipping + " <br /> " + "Estado: " + status + " <br /> "+"Publicación: " + itemResultlink;
-
-    
+            textoItem.innerHTML = "Título: " + titulo + " <br /> " + "Item: " + item + " <br /> " + "Item CBT: " + cbtItemParent + " <br /> " + "Seller: " + seller + " <br /> " + "Parent CBT: " + sellerParent + " <br /> " + "Categoría: " + categoria + "  soporta " + catShiOptMe1 + ", " + catShiOptMe2 + ", " + catShiOptMe3 + " <br /> " + "Dimensiones de la categoría --> " + "Largo: " + largoCate + "; " + "Ancho: " + anchoCate + "; " + "Alto: " + altoCate + "; " + "Peso: " + pesoCate + " <br /> " + "Dimensiones del item --> " + "Largo: " + largoItem + "; " + "Ancho: " + anchoItem + "; " + "Alto: " + altoItem + "; " + "Peso: " + pesoItem + " <br /> " + "Apto para FBM: " + itemFBMYesNo + " <br /> " + "Inventario FBM: " + inventario + " <br /> " + "Opciones de Envío: " + shipping + " <br /> " + "Estado: " + status;
+           
             links.appendChild(catEquiURL);
-
+            links.appendChild(itemResultlink);
             
 
             catEquiURL.innerHTML = `Equivalente para ${categoria}`;
