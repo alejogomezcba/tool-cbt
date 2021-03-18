@@ -93,6 +93,8 @@ let itemResult = async search => {
     );
     const jsoned = await found.json();
 
+    console.log(jsoned);
+
     var categoria = jsoned.category_id;
     var seller = jsoned.seller_id
     var titulo = jsoned.title
@@ -104,6 +106,11 @@ let itemResult = async search => {
     var link = jsoned.permalink;
     var status = jsoned.status;
     var pictures = jsoned.pictures;
+    let variacion = jsoned.variations;
+
+ console.log(variacion);   
+
+
 
     const catfound = await fetch(`${InternalApi}/categories/${categoria}/shipping_preferences`);
     const catjsoned = await catfound.json();
@@ -179,10 +186,7 @@ let itemResult = async search => {
 
 
     const textoItem = document.createElement("p");
-    
     const catEquiURL = document.createElement("a");
-    const textoSeller = document.createElement("p");
-    
     const imgTitleCont = document.createElement("h4");
 
     imgTitleCont.innerHTML = `Imágenes del site ${search}`;
@@ -201,10 +205,29 @@ let itemResult = async search => {
     itemResultlink.target = "_blank";
     itemResultlink.innerHTML = "Publicación";
 
+    const titleVarItem = document.createElement("h4");
+    titleVarItem.innerHTML = "Variaciones";
+    const contVar = document.getElementById('result_variation');
+    contVar.appendChild(titleVarItem);
+
+    variacion.forEach(function (variation) {
+        const varInventory = variation.inventory_id;
+        const varID = variation.id;
+        const varQuantity = variation.available_quantity;
+        const textoVarItem = document.createElement("p");
+        const contVar = document.getElementById('result_variation');
+        textoVarItem.innerHTML = `Inventory_id: ${varInventory}, Variation_id: ${varID}, Cantidad: ${varQuantity}`;
+        contVar.appendChild(textoVarItem);
+        console.log(textoVarItem);
+    })
+    
 
     result_item.appendChild(textoItem);
     textoItem.innerHTML = "Título: " + titulo + " <br /> " + "Item: " + item + " <br /> " + "Item CBT: " + cbtItemParent + " <br /> " + "Seller: " + seller + " <br /> " + "Parent CBT: " + sellerParent + " <br /> " + "Categoría: " + categoria + "  soporta " + catShiOptMe1 + ", " + catShiOptMe2 + ", " + catShiOptMe3 + " <br /> " + "Dimensiones de la categoría --> " + "Largo: " + largoCate + "; " + "Ancho: " + anchoCate + "; " + "Alto: " + altoCate + "; " + "Peso: " + pesoCate + " <br /> " + "Dimensiones del item --> " + "Largo: " + largoItem + "; " + "Ancho: " + anchoItem + "; " + "Alto: " + altoItem + "; " + "Peso: " + pesoItem + " <br /> " + "Apto para FBM: " + itemFBMYesNo + " <br /> " + "Inventario FBM: " + inventario + " <br /> " + "Opciones de Envío: " + shipping + " <br /> " + "Estado: " + status;
    
+    
+
+    
     links.appendChild(catEquiURL);
     links.appendChild(itemResultlink);
     
