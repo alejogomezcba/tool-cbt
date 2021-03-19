@@ -177,6 +177,7 @@ let itemResult = async (search) => {
   var inventario = jsoned.inventory_id;
   var link = jsoned.permalink;
   var status = jsoned.status;
+  var subStatus = jsoned.sub_status;
   var pictures = jsoned.pictures;
   let variacion = jsoned.variations;
 
@@ -356,7 +357,7 @@ let itemResult = async (search) => {
     shipping +
     " <br /> " +
     "Estado: " +
-    status;
+    status + " / Sub status: " + subStatus;
 
   let links = document.getElementById("links");
 
